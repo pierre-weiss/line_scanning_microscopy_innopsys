@@ -40,12 +40,12 @@ jit_im1 = jit_im1[:,:-int(true_I)-1]
 jit_im2 = jit_im2[:,:-int(true_I)]
 jit_im3 = jit_im3[:,:-int(true_I)]
 
-io.imsave("ICIP_Figures/jit_Chelsea_const.png",(jit_im1[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/jit_Chelsea_speed.png",(jit_im2[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/jit_Chelsea_composed.png",(jit_im3[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/jit_V_manu_const.png",(jit_im4[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/jit_V_manu_speed.png",(jit_im5[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/jit_V_manu_composed.png",(jit_im6[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("jit_Chelsea_const.png",(jit_im1[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("jit_Chelsea_speed.png",(jit_im2[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("jit_Chelsea_composed.png",(jit_im3[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("jit_V_manu_const.png",(jit_im4[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("jit_V_manu_speed.png",(jit_im5[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("jit_V_manu_composed.png",(jit_im6[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
 
 algo1 = "DP"
 algo2 = "Relax"
@@ -114,23 +114,23 @@ for ax in axs.flat:
         ax.set(xlabel=x_label[i%2], ylabel=y_label[int((i+1)/2)])
     i+=1
 
-plt.savefig("ICIP_Figures/Comparison_all_shifts.png")
+plt.savefig("Comparison_all_shifts.png")
 
 #%% saving resulting images and computing scores for each algorithms (PSNR, SSIM, median of the absolute shift error, and time)
 
-io.imsave("ICIP_Figures/dej_"+algo1+"_Chelsea_const.png",(dej1/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo1+"_Chelsea_speed.png",(dej2/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo1+"_Chelsea_composed.png",(dej3/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo1+"_V_manu_const.png",(((dej4-np.min(dej4))/(np.max(dej4)-np.min(dej4))*255).astype(np.uint8))) #the contrast displaying norm in latex makes artefacts in the text image so we renormalize its values
-io.imsave("ICIP_Figures/dej_"+algo1+"_V_manu_speed.png",(((dej5-np.min(dej5))/(np.max(dej5)-np.min(dej5))*255).astype(np.uint8)))
-io.imsave("ICIP_Figures/dej_"+algo1+"_V_manu_composed.png",(((dej6-np.min(dej6))/(np.max(dej6)-np.min(dej6))*255).astype(np.uint8)))
+io.imsave("dej_"+algo1+"_Chelsea_const.png",(dej1/256).astype(np.uint8))
+io.imsave("dej_"+algo1+"_Chelsea_speed.png",(dej2/256).astype(np.uint8))
+io.imsave("dej_"+algo1+"_Chelsea_composed.png",(dej3/256).astype(np.uint8))
+io.imsave("dej_"+algo1+"_V_manu_const.png",(((dej4-np.min(dej4))/(np.max(dej4)-np.min(dej4))*255).astype(np.uint8))) #the contrast displaying norm in latex makes artefacts in the text image so we renormalize its values
+io.imsave("dej_"+algo1+"_V_manu_speed.png",(((dej5-np.min(dej5))/(np.max(dej5)-np.min(dej5))*255).astype(np.uint8)))
+io.imsave("dej_"+algo1+"_V_manu_composed.png",(((dej6-np.min(dej6))/(np.max(dej6)-np.min(dej6))*255).astype(np.uint8)))
 
-io.imsave("ICIP_Figures/dej_"+algo2+"_Chelsea_const.png",(dej1/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo2+"_Chelsea_speed.png",(dej2/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo2+"_Chelsea_composed.png",(dej3/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo2+"_V_manu_const.png",(((dej4dr-np.min(dej4dr))/(np.max(dej4dr)-np.min(dej4dr))*255).astype(np.uint8)))
-io.imsave("ICIP_Figures/dej_"+algo2+"_V_manu_speed.png",(((dej5dr-np.min(dej5dr))/(np.max(dej5dr)-np.min(dej5dr))*255).astype(np.uint8)))
-io.imsave("ICIP_Figures/dej_"+algo2+"_V_manu_composed.png",(((dej6dr-np.min(dej6dr))/(np.max(dej6dr)-np.min(dej6dr))*255).astype(np.uint8)))
+io.imsave("dej_"+algo2+"_Chelsea_const.png",(dej1/256).astype(np.uint8))
+io.imsave("dej_"+algo2+"_Chelsea_speed.png",(dej2/256).astype(np.uint8))
+io.imsave("dej_"+algo2+"_Chelsea_composed.png",(dej3/256).astype(np.uint8))
+io.imsave("dej_"+algo2+"_V_manu_const.png",(((dej4dr-np.min(dej4dr))/(np.max(dej4dr)-np.min(dej4dr))*255).astype(np.uint8)))
+io.imsave("dej_"+algo2+"_V_manu_speed.png",(((dej5dr-np.min(dej5dr))/(np.max(dej5dr)-np.min(dej5dr))*255).astype(np.uint8)))
+io.imsave("dej_"+algo2+"_V_manu_composed.png",(((dej6dr-np.min(dej6dr))/(np.max(dej6dr)-np.min(dej6dr))*255).astype(np.uint8)))
 
 print("results : "+algo1)
 print("   PSNR  ||  SSIM   || absq0.5 || time")
@@ -210,12 +210,12 @@ print("%2.4f"%peak_signal_noise_ratio(im2,comp5[:,search_zone_length:-search_zon
 print("%2.4f"%peak_signal_noise_ratio(im2,comp6[:,search_zone_length:-search_zone_length],data_range = 2**memory_range-1),
       " || %2.4f"%structural_similarity(im2,comp6[:,search_zone_length:-search_zone_length],data_range = 2**memory_range-1))
 
-io.imsave("ICIP_Figures/dej_"+algo3+"_Chelsea_const.png",(comp1[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo3+"_Chelsea_speed.png",(comp2[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo3+"_Chelsea_composed.png",(comp3[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo3+"_V_manu_const.png",(comp4[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo3+"_V_manu_speed.png",(comp5[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
-io.imsave("ICIP_Figures/dej_"+algo3+"_V_manu_composed.png",(comp6[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("dej_"+algo3+"_Chelsea_const.png",(comp1[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("dej_"+algo3+"_Chelsea_speed.png",(comp2[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("dej_"+algo3+"_Chelsea_composed.png",(comp3[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("dej_"+algo3+"_V_manu_const.png",(comp4[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("dej_"+algo3+"_V_manu_speed.png",(comp5[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
+io.imsave("dej_"+algo3+"_V_manu_composed.png",(comp6[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
 
 #%% big real image of 15000 lines x 10016 columns
 pancreas = io.imread("Images/pancreas.png").astype(np.float64)
@@ -237,6 +237,6 @@ plt.legend()
 plt.title("shifts obtained")
 plt.show()
 print("time for DP : ",t_DP_pancreas,"time for Weight Relaxation : ",t_WR_pancreas)
-io.imsave("ICIP_Figures/demo_pancreas.png",np.clip(pancreas[2150:2450,5160+search_zone_length:5500+search_zone_length],0,2**16-1).astype(np.uint16))
-io.imsave("ICIP_Figures/demo_dej_DP_pancreas.png",np.clip(dej_DP_pancreas[2150:2450,5160:5500],0,2**16-1).astype(np.uint16))
-io.imsave("ICIP_Figures/demo_dej_WR_pancreas.png",np.clip(dej_WR_pancreas[2150:2450,5160:5500],0,2**16-1).astype(np.uint16))
+io.imsave("demo_pancreas.png",np.clip(pancreas[2150:2450,5160+search_zone_length:5500+search_zone_length],0,2**16-1).astype(np.uint16))
+io.imsave("demo_dej_DP_pancreas.png",np.clip(dej_DP_pancreas[2150:2450,5160:5500],0,2**16-1).astype(np.uint16))
+io.imsave("demo_dej_WR_pancreas.png",np.clip(dej_WR_pancreas[2150:2450,5160:5500],0,2**16-1).astype(np.uint16))
