@@ -12,7 +12,6 @@ from skimage import io
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 from time import time
 import utils as tls
-from numba import jit
 
 def DP_shifts_on_the_grid(U,V,R,X,gamma,show=False):
     """
@@ -44,11 +43,11 @@ def DP_shifts_on_the_grid(U,V,R,X,gamma,show=False):
     x[0,0,:] = np.linspace(0,1,X,endpoint=False)
     v_base = gamma*np.linspace(-2*R,2*R,4*R*X,endpoint=False)**2
     du = np.expand_dims(np.roll(U,-1,axis = 1)[1:,:-1]-U[1:,:-1],axis=2)
-    #t=time()
+    t=time()
     B = [np.linalg.norm(np.reshape(np.multiply(du[:,:2*R],x),(-1,2*R*X))+np.repeat(U[1:,:2*R],X,axis = 1)-np.expand_dims((V[:-1,R]+V[1:,R])/2,axis=1),ord = 1,axis=0)]
     for i in range(1,n):
-        #if show and i%300 == 200:
-            #print("    Constructing messages at column : ",i," - time : ",time()-t," - ",int(i/n*100),"% of processed columns")
+        if show and i%300 == 200:
+            print("    Constructing messages at column : ",i," - time : ",time()-t," - ",int(i/n*100),"% of processed columns")
         k = np.argmin(B[-1])
         B.append(np.linalg.norm(np.reshape(np.multiply(du[:,i:2*R+i],x),(-1,2*R*X))+np.repeat(U[1:,i:2*R+i],X,axis = 1)-np.expand_dims((V[:-1,i+R]+V[1:,i+R])/2,axis=1),ord = 1,axis=0)+B[-1][k]+v_base[2*R*X-k:4*R*X-k])
     d = [np.argmin(B[-1])]

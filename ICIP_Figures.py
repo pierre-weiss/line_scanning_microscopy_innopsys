@@ -16,9 +16,9 @@ import DP_algo as DP
 import Weight_Relaxation_algo as W_Relax
 
 
-im1 = np.array(io.imread("../Images/Chelsea.png")).astype(np.float64)*2**8
+im1 = np.array(io.imread("Images/Chelsea.png")).astype(np.float64)*2**8
 name1 = "Chelsea"
-im2 = np.array(io.imread("../Images/V_manu.png")).astype(np.float64)*2**8
+im2 = np.array(io.imread("Images/V_manu.png")).astype(np.float64)*2**8
 name2 = "V_manu"
 
 true_I = 10.4
@@ -186,12 +186,12 @@ print("%2.4f"%peak_signal_noise_ratio(im2,dej6dr,data_range = 2**memory_range-1)
       " || %2.4f"%np.median(np.abs(true_shift6[12:-12]-d6dr)),
       " || %2.4f"%t6dr)
 
-comp1 = io.imread("../Images/jit_const_Chelsea_ch0_DEJIT.tif").astype(np.float64)
-comp2 = io.imread("../Images/jit_composed_Chelsea_ch0_DEJIT.tif").astype(np.float64)
-comp3 = io.imread("../Images/jit_speed_Chelsea_ch0_DEJIT.tif").astype(np.float64)
-comp4 = io.imread("../Images/jit_const_V_manu_ch0_DEJIT.tif").astype(np.float64)
-comp5 = io.imread("../Images/jit_composed_V_manu_ch0_DEJIT.tif").astype(np.float64)
-comp6 = io.imread("../Images/jit_speed_V_manu_ch0_DEJIT.tif").astype(np.float64)
+comp1 = io.imread("Images/jit_const_Chelsea_ch0_DEJIT.tif").astype(np.float64)
+comp2 = io.imread("Images/jit_composed_Chelsea_ch0_DEJIT.tif").astype(np.float64)
+comp3 = io.imread("Images/jit_speed_Chelsea_ch0_DEJIT.tif").astype(np.float64)
+comp4 = io.imread("Images/jit_const_V_manu_ch0_DEJIT.tif").astype(np.float64)
+comp5 = io.imread("Images/jit_composed_V_manu_ch0_DEJIT.tif").astype(np.float64)
+comp6 = io.imread("Images/jit_speed_V_manu_ch0_DEJIT.tif").astype(np.float64)
 
 algo3 = "Nam"
 
@@ -218,7 +218,7 @@ io.imsave("ICIP_Figures/dej_"+algo3+"_V_manu_speed.png",(comp5[:,search_zone_len
 io.imsave("ICIP_Figures/dej_"+algo3+"_V_manu_composed.png",(comp6[:,search_zone_length:-search_zone_length]/256).astype(np.uint8))
 
 #%% big real image of 15000 lines x 10016 columns
-pancreas = io.imread("../Images/pancreas.png").astype(np.float64)
+pancreas = io.imread("Images/pancreas.png").astype(np.float64)
 search_zone_length = 20
 subpixels_number = 10
 dej_DP_pancreas,d_DP_pancreas,t_DP_pancreas = DP.main_DP_on_the_grid_L1_regul2(pancreas[:,::-1],search_zone_length,subpixels_number,70000, show = True)

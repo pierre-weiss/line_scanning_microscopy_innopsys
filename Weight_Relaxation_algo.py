@@ -12,7 +12,6 @@ from skimage import io
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 from time import time
 import utils as tls
-from numba import jit
 
 def fast_recons_im(Odd,w_sol,I,memory_range,opt = 0):
     """
@@ -49,7 +48,7 @@ def fast_recons_im(Odd,w_sol,I,memory_range,opt = 0):
     n_1,n_2 = Odd.shape
     for i in range(n):
         new_Odd[:,I+i] = Odd[:,i:i+I]@w[:,i]
-    if memory_range<=8:        
+    if memory_range<=8:
         return np.clip(new_Odd,0,2**memory_range-1).astype(np.uint8)
     else:
         return np.clip(new_Odd,0,2**memory_range-1).astype(np.uint16)
@@ -122,7 +121,6 @@ def solve_prox_DR(im,I,gamma,W0,show = 0):
         print("    Resolution time : ",time()-t0)
     return np.reshape(np.array(sol_w)[:,:,0],(-1))
 
-@jit
 def pre_computer_prox_DR(im,I,gamma,show = 0):
     """
     Find the weights solving the proximal operator needed in the Douglas-Rachford iteration.
@@ -185,7 +183,6 @@ def pre_computer_prox_DR(im,I,gamma,show = 0):
         print("    Total pre-computing time : ",time()-t0)
     return list_hat_A_i, list_B_i, list_tmp_mat, list_tmp_mat2, list_tmp_mat_carr
 
-@jit
 def solve_prox_DR_from_pre_computed_data(im,I,gamma,W0,list_hat_A_i,list_B,list_mat,list_mat2,list_mat_square):
     """
     Find the weights solving the proximal operator needed in the Douglas-Rachford iteration.
@@ -338,7 +335,6 @@ def solver_DR(im,I,gamma,tol = 1e-3, show = False):
             print("Ongoing Douglas Rachford total time: ",time()-t0," - actual precision = ",np.linalg.norm(x_new-x_old)/np.linalg.norm(x_new)," for tolerance = ",tol)
     return x_new,it
 
-@jit
 def pre_computed_solver_DR(im,I,gamma,tol = 1e-3, show = False):
     """
     solves the relaxed weights problem using douglas rachford algorithm
@@ -385,7 +381,7 @@ def pre_computed_solver_DR(im,I,gamma,tol = 1e-3, show = False):
 #%% main algorithms constrained weight relaxation
 def main_solver_weight_relax(im,I,mu,name="",save=False,memory_range = 16, show = False):
     """
-    
+
 
     Parameters
     ----------
@@ -483,7 +479,7 @@ def demo_weight_relax(opt = 0):
 #%% main algorithms constrained weight relaxation 2
 def main_solver_weight_relax_with_pre_computer(im,I,mu,tol=1e-3,name="",save=False,memory_range = 16, show = False):
     """
-    
+
 
     Parameters
     ----------
@@ -605,7 +601,3 @@ def shift_from_w(w,X):
         tmp[:,i] = w[:,int(np.floor(i/X))]*(1-i/X+int(np.floor(i/X)))+w[:,int(np.floor(i/X))]*(i/X-int(np.floor(i/X)))
     d = np.argmax(tmp,axis = 1)
     return -(d/X-search_pattern_length)[:-search_pattern_length]
-
-
-
-
