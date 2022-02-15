@@ -12,4 +12,4 @@ The provided code and figures are given for reproducibility of the dejittering r
 
 ### Who do I talk to? ###
 
-For any issues with the code or questions regarding the article you can contact Pierre Weiss at pierre.armand.weiss@gmail.com
+For any issues with the code or questions regarding the article you can contact Pierre Weiss at pierre.armand.weiss@gmail.com and Landry Duguet at landry.duguet@free.fr
