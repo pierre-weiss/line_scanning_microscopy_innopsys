@@ -41,21 +41,22 @@ def DP_shifts_on_the_grid(U,V,R,X,gamma,show=False):
     n = U.shape[1]-2*R
     x = np.zeros((1,1,X))
     x[0,0,:] = np.linspace(0,1,X,endpoint=False)
-    v_base = gamma*np.linspace(-2*R,2*R,4*R*X,endpoint=False)**2
+    v_base = gamma*np.linspace(-R,R,2*R*X,endpoint=False)**2
     du = np.expand_dims(np.roll(U,-1,axis = 1)[1:,:-1]-U[1:,:-1],axis=2)
     t=time()
-    B = [np.linalg.norm(np.reshape(np.multiply(du[:,:2*R],x),(-1,2*R*X))+np.repeat(U[1:,:2*R],X,axis = 1)-np.expand_dims((V[:-1,R]+V[1:,R])/2,axis=1),ord = 1,axis=0)]
+    B = [np.linalg.norm(np.reshape(np.multiply(du[:,R:2*R],x),(-1,R*X))+np.repeat(U[1:,R:2*R],X,axis = 1)-np.expand_dims((V[:-1,R]+V[1:,R])/2,axis=1),ord = 1,axis=0)]
     for i in range(1,n):
-        if show and i%300 == 200:
+        if show and i%1000 == 200:
             print("    Constructing messages at column : ",i," - time : ",time()-t," - ",int(i/n*100),"% of processed columns")
         k = np.argmin(B[-1])
-        B.append(np.linalg.norm(np.reshape(np.multiply(du[:,i:2*R+i],x),(-1,2*R*X))+np.repeat(U[1:,i:2*R+i],X,axis = 1)-np.expand_dims((V[:-1,i+R]+V[1:,i+R])/2,axis=1),ord = 1,axis=0)+B[-1][k]+v_base[2*R*X-k:4*R*X-k])
+        B.append(np.linalg.norm(np.reshape(np.multiply(du[:,R+i:2*R+i],x),(-1,R*X))+np.repeat(U[1:,R+i:2*R+i],X,axis = 1)-np.expand_dims((V[:-1,i+R]+V[1:,i+R])/2,axis=1),ord = 1,axis=0)+B[-1][k]+v_base[R*X-k:2*R*X-k])
     d = [np.argmin(B[-1])]
     for i in np.arange(n-1,-1,-1):
-        d.append(np.argmin(B[i]+v_base[2*R*X-d[-1]:4*R*X-d[-1]]))
+        d.append(np.argmin(B[i]+v_base[R*X-d[-1]:2*R*X-d[-1]]))
     shift = np.zeros((U.shape[1]))
-    shift[R-1:-R] = np.array(d[::-1])/X-R
+    shift[R-1:-R] = np.array(d[::-1])/X
     return shift
+
 
 def dejitt(Odd,d):
     """
@@ -155,20 +156,25 @@ def demo_DP_on_the_grid(opt = 0):
     if opt == 0:
         im = np.array(io.imread("../images/Chelsea.png")).astype(np.float64)
         name = "Chelsea"
-        gamma = 15000
+        gamma = 300
     else:
         im = np.array(io.imread("../images/V_manu.png")).astype(np.float64)
         name = "V_manu"
-        gamma = 2000
+        gamma = 10
     memory_range = 8
     true_I = 10.4
     jit_im,true_shift = tls.im_to_jitter(im,tls.jit_speed,true_I,memory_range)
     I = 15
-    dejit_im,shifts,t = main_DP_on_the_grid_L1_regul2(jit_im[:,:-int(np.ceil(true_I))], I, gamma, 10, "demo_DP_"+name, True, memory_range)
-    tls.plot(dejit_im, "Dejittered image using weight relaxation algorithm")
+    subpixel_nb = 10
+    dejit_im,shifts,t = main_DP_on_the_grid_L1_regul2(jit_im[:,:-int(np.ceil(true_I))], I, subpixel_nb, gamma, "demo_DP_"+name, True, memory_range)
+    tls.plot(dejit_im, "Dejittered image using DP algorithm")
     tls.plot(jit_im[-128:,100+I:228+I], "Crop of the jittered image")
     tls.plot(im[-128:,100+I:228+I], "Crop of the original image")
-    tls.plot(dejit_im[-128:,100:228], "Crop of the dejittered image using weight relaxation algorithm")
+    tls.plot(dejit_im[-128:,100:228], "Crop of the dejittered image using DP algorithm")
+    plt.figure()
+    plt.plot(true_shift[I:-I])
+    plt.plot(shifts)
+    plt.show()
     print("PSNR is ",peak_signal_noise_ratio(im[:,I:-I-int(np.ceil(true_I))],dejit_im,data_range = 2**memory_range-1))
     print("compared to ",peak_signal_noise_ratio(im[:,I:-I-int(np.ceil(true_I))],jit_im[:,I:-I-int(np.ceil(true_I))],data_range = 2**memory_range-1))
     print("SSIM is ",structural_similarity(im[:,I:-I-int(np.ceil(true_I))],dejit_im,data_range = 2**memory_range-1))
